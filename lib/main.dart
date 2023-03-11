@@ -1,21 +1,37 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/controller/change.dart';
+import 'package:flutter_chat/controller/settingtheme.dart';
 import 'package:flutter_chat/screens/info_page.dart';
-import './helper/helper_function.dart';
+import 'package:flutter_chat/screens/profile.dart';
 import './screens/auth/log_in.dart';
 import 'package:flutter/foundation.dart';
 import './screens/home_page.dart';
 import './shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import './screens/videoconference.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
+    // Map<String, dynamic> firebaseConfig = {
+    //   "apiKey": "AIzaSyBaWT4P_AuJSWn-aeR6l6IdVk1BmomzjPw",
+    //   "authDomain": "fir-chat-f9085.firebaseapp.com",
+    //   "projectId": "fir-chat-f9085",
+    //   "storageBucket": "fir-chat-f9085.appspot.com",
+    //   "messagingSenderId": "57293197254",
+    //   "appId": "1:57293197254:web:e0251f1c261c3b363b6cc7",
+    //   "measurementId": "G-ET9F6VMP11"
+    // };
+
     await Firebase.initializeApp(
         options: FirebaseOptions(
             apiKey: Constants.apiKey,
             appId: Constants.appId,
             messagingSenderId: Constants.messagingSenderId,
+            storageBucket: Constants.storageBucket,
+            measurementId: Constants.measurementId,
             projectId: Constants.projectId));
   } else {
     await Firebase.initializeApp();
@@ -36,52 +52,70 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    getUserLogedInStatus();
+    // getUserLogedInStatus();
   }
 
-  getUserLogedInStatus() async {
-    await HelperFunction.getUserLogedInStatus().then((value) {
-      if (kDebugMode) {
-        print('loged in value  $value');
-      }
-      if (value != null) {
-        setState(() {
-          _isUserLogedIn = value;
-        });
-      }
-    });
-  }
+  // getUserLogedInStatus() async {
+  //   await HelperFunction.getUserLogedInStatus().then((value) {
+  //     if (kDebugMode) {
+  //       print('loged in value  $value');
+  //     }
+  //     if (value != null) {
+  //       setState(() {
+  //         _isUserLogedIn = value;
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        routes: {
-          HomePage.routeName: (context) => const HomePage(),
-          LogIn.routName: (context) => const LogIn(),
-          Info.routName: (context) => Info(
-                adminName: '',
-                groupId: '',
-                groupName: '',
-              )
+    // var change = Provider.of<ChangeTheme>(context);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) {
+          return ChangeTheme();
+        }),
+        ChangeNotifierProvider(create: (context) {
+          return Change();
+        }),
+      ],
+      child: Consumer<ChangeTheme>(
+        builder: (context, change, child) {
+          return MaterialApp(
+              routes: {
+                HomePage.routeName: (context) => const HomePage(),
+                LogIn.routName: (context) => const LogIn(),
+                Profile.routName: (context) => const Profile(),
+                VideoConference.routName: (context) => VideoConference(),
+                Info.routName: (context) => Info(
+                      adminName: '',
+                      groupId: '',
+                      groupName: '',
+                    )
+              },
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                  primaryColor: Constants.primaryColor,
+                  brightness:
+                      change.getTheme ? Brightness.dark : Brightness.light),
+              home: StreamBuilder(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        color: Constants.primaryColor,
+                      );
+                    } else {
+                      if (snapshot.hasData) {
+                        return const HomePage();
+                      } else {
+                        return const LogIn();
+                      }
+                    }
+                  }));
         },
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Constants.primaryColor,
-            scaffoldBackgroundColor: Colors.white),
-        home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator(
-                  color: Constants.primaryColor,
-                );
-              } else {
-                if (snapshot.hasData) {
-                  return const HomePage();
-                } else {
-                  return const LogIn();
-                }
-              }
-            }));
+      ),
+    );
   }
 }

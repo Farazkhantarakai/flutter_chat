@@ -5,15 +5,15 @@ const inputDecoration = InputDecoration(
   hintStyle: TextStyle(color: Colors.black),
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(
-      color: Color(0xFFee7b64),
+      color: Color.fromARGB(148, 126, 212, 105),
       width: 2,
     ),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xFFee7b64), width: 2),
+    borderSide: BorderSide(color: Color.fromARGB(148, 126, 212, 105), width: 2),
   ),
   errorBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xFFee7b64), width: 2),
+    borderSide: BorderSide(color: Color.fromARGB(148, 126, 212, 105), width: 2),
   ),
 );
 

@@ -28,6 +28,7 @@ class GroupTile extends StatelessWidget {
         }));
       },
       child: Card(
+        color: Colors.white,
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: Constants.primaryColor,

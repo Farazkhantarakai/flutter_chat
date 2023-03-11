@@ -29,9 +29,9 @@ class _LogInState extends State<LogIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: isLoading!
-            ? const Center(
+            ? Center(
                 child: CircularProgressIndicator(
-                color: Colors.red,
+                color: Theme.of(context).primaryColor,
               ))
             : SafeArea(
                 child: SingleChildScrollView(
@@ -44,13 +44,16 @@ class _LogInState extends State<LogIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
+                            const SizedBox(
+                              height: 30,
+                            ),
                             const Text(
-                              'Groupie',
+                              'Talkie',
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             const Text('create group to talk with each other'),
-                            Image.asset('asset/icons/login.png'),
+                            Image.asset('asset/icons/login.jpg'),
                             TextFormField(
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
@@ -67,16 +70,13 @@ class _LogInState extends State<LogIn> {
                                 _email = value;
                               },
                               decoration: inputDecoration.copyWith(
-                                  label: const Text(
-                                    'Email',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.black),
-                                  ),
-                                  prefix: Icon(
-                                    Icons.email,
-                                    color: Theme.of(context).primaryColor,
-                                  )),
+                                label: const Text(
+                                  'Email',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black),
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 5,
@@ -93,16 +93,13 @@ class _LogInState extends State<LogIn> {
                                 _password = value;
                               },
                               decoration: inputDecoration.copyWith(
-                                  label: const Text(
-                                    'Password',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                  prefix: Icon(
-                                    Icons.lock,
-                                    color: Theme.of(context).primaryColor,
-                                  )),
+                                label: const Text(
+                                  'Password',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 20,
@@ -111,9 +108,10 @@ class _LogInState extends State<LogIn> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
+                                  // setState(() {
+                                  //   isLoading = true;
+                                  // });
+
                                   if (_formKey.currentState!.validate()) {
                                     AuthServices authServices = AuthServices();
 

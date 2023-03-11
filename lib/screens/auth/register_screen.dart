@@ -42,12 +42,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         const Text(
-                          'Groupie',
+                          'Talkie',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const Text('create group to talk with each other'),
-                        Image.asset('asset/icons/register.png'),
+                        Image.asset('asset/icons/register.jpg'),
                         TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
@@ -64,43 +64,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _email = value;
                           },
                           decoration: inputDecoration.copyWith(
-                              label: const Text(
-                                'Email',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black),
-                              ),
-                              prefix: Icon(
-                                Icons.email,
-                                color: Theme.of(context).primaryColor,
-                              )),
+                            label: const Text(
+                              'Email',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black),
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 5,
                         ),
                         TextFormField(
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Field can not be null';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            _fullName = value;
-                          },
-                          decoration: inputDecoration.copyWith(
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Field can not be null';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              _fullName = value;
+                            },
+                            decoration: inputDecoration.copyWith(
                               label: const Text(
                                 'FullName',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     color: Colors.black),
                               ),
-                              prefix: Icon(
-                                Icons.email,
-                                color: Theme.of(context).primaryColor,
-                              )),
-                        ),
+                            )),
                         const SizedBox(
                           height: 5,
                         ),
@@ -116,16 +109,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _password = value;
                           },
                           decoration: inputDecoration.copyWith(
-                              label: const Text(
-                                'Password',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              prefix: Icon(
-                                Icons.lock,
-                                color: Theme.of(context).primaryColor,
-                              )),
+                            label: const Text(
+                              'Password',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 20,

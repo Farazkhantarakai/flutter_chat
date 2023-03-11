@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/controller/settingtheme.dart';
 import 'package:flutter_chat/helper/helper_function.dart';
 import 'package:flutter_chat/screens/profile.dart';
 import 'package:flutter_chat/screens/search.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_chat/shared/constants.dart';
 import 'package:flutter_chat/widgets/group_tile.dart';
 import 'package:flutter_chat/widgets/nowidget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool isLoading = false;
   String groupName = '';
+
   @override
   void initState() {
     getData();
@@ -50,10 +53,14 @@ class _HomePageState extends State<HomePage> {
         groups = snapshot;
       });
     });
+    await DatabaseServices(uId: FirebaseAuth.instance.currentUser!.uid)
+        .getProfilePic();
   }
 
   @override
   Widget build(BuildContext context) {
+    var changTheme = Provider.of<ChangeTheme>(context);
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
@@ -67,33 +74,14 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(20),
                 child: ListView(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.person,
-                          size: 100,
-                          color: Colors.grey,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Text('Name'),
-                        Text('$name'),
-                      ],
-                    ),
                     ListTile(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Profile(email: email!, name: name!);
-                        }));
+                        Navigator.pushNamed(context, Profile.routName,
+                            arguments: {'email': email, 'name': name});
                       },
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.person,
-                        color: Colors.deepOrange,
+                        color: Theme.of(context).primaryColor,
                       ),
                       title: const Text('Profile'),
                     ),
@@ -104,12 +92,21 @@ class _HomePageState extends State<HomePage> {
                           return const HomePage();
                         }));
                       },
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.group,
-                        color: Colors.deepOrange,
+                        color: Theme.of(context).primaryColor,
                       ),
                       title: const Text('Group'),
                     ),
+                    SwitchListTile(
+                        title: changTheme.getTheme
+                            ? const Text('Change to Light Mode')
+                            : const Text('Change to Dark Mode'),
+                        value: changTheme.getTheme,
+                        activeColor: Theme.of(context).primaryColor,
+                        onChanged: (val) {
+                          changTheme.doDark();
+                        }),
                     ListTile(
                       onTap: () {
                         showDialog(
@@ -126,25 +123,25 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.pop(context);
                                         });
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.check,
-                                        color: Colors.deepOrange,
+                                        color: Theme.of(context).primaryColor,
                                       )),
                                   IconButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.dangerous,
-                                        color: Colors.deepOrange,
+                                        color: Theme.of(context).primaryColor,
                                       ))
                                 ],
                               );
                             }));
                       },
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.exit_to_app,
-                        color: Colors.deepOrange,
+                        color: Theme.of(context).primaryColor,
                       ),
                       title: const Text('Exit'),
                     )
@@ -172,35 +169,37 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-                title: const Text(
+                title: Text(
                   'Create Group',
-                  style: TextStyle(color: Colors.deepOrange),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     isLoading == false
                         ? TextFormField(
-                            cursorColor: Colors.deepOrange,
+                            cursorColor: Theme.of(context).primaryColor,
                             onChanged: (value) {
                               setState(() {
                                 groupName = value;
                               });
                             },
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrange, width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                        color: Theme.of(context).primaryColor,
+                                        width: 3),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrange, width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)))),
+                                        color: Theme.of(context).primaryColor,
+                                        width: 3),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)))),
                           )
-                        : const CircularProgressIndicator(
-                            color: Colors.red,
+                        : CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
                           ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -208,7 +207,8 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepOrange),
+                                backgroundColor:
+                                    Theme.of(context).primaryColor),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -218,7 +218,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepOrange),
+                                backgroundColor:
+                                    Theme.of(context).primaryColor),
                             onPressed: () async {
                               if (groupName.isNotEmpty) {
                                 setState(() {

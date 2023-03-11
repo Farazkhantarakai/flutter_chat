@@ -32,12 +32,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.2.9
   firebase_messaging: ^14.2.5
+  firebase_storage: ^11.0.15
   flutter:
     sdk: flutter
   fluttertoast: ^8.2.1
+  image_picker: ^0.8.7
+  provider: ^6.0.5
   shared_preferences: ^2.0.18
   uuid: ^3.0.7
-  zego_uikit_prebuilt_call: ^2.0.0
+  zego_uikit_prebuilt_call: ^2.1.1
+  zego_uikit_prebuilt_video_conference: ^2.1.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -55,8 +59,9 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - asset/icons/login.png
-    - asset/icons/register.png
+    - asset/icons/login.jpg
+    - asset/icons/register.jpg
+    - asset/icons/user.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
