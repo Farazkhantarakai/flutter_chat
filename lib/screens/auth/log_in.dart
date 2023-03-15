@@ -53,7 +53,13 @@ class _LogInState extends State<LogIn> {
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             const Text('create group to talk with each other'),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Image.asset('asset/icons/login.jpg'),
+                            const SizedBox(
+                              height: 12,
+                            ),
                             TextFormField(
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
@@ -70,11 +76,9 @@ class _LogInState extends State<LogIn> {
                                 _email = value;
                               },
                               decoration: inputDecoration.copyWith(
-                                label: const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black),
+                                hintText: 'Email',
+                                hintStyle: const TextStyle(
+                                  fontWeight: FontWeight.w300,
                                 ),
                               ),
                             ),
@@ -93,12 +97,9 @@ class _LogInState extends State<LogIn> {
                                 _password = value;
                               },
                               decoration: inputDecoration.copyWith(
-                                label: const Text(
-                                  'Password',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w300),
-                                ),
+                                hintText: 'Password',
+                                hintStyle: const TextStyle(
+                                    fontWeight: FontWeight.w300),
                               ),
                             ),
                             const SizedBox(
@@ -108,17 +109,14 @@ class _LogInState extends State<LogIn> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  // setState(() {
-                                  //   isLoading = true;
-                                  // });
-
                                   if (_formKey.currentState!.validate()) {
                                     AuthServices authServices = AuthServices();
 
                                     setState(() {
                                       isLoading = true;
                                     });
-                                    await authServices
+
+                                    authServices
                                         .logInUserWithEmailAndPassword(
                                             _email, _password)
                                         .then((value) async {
@@ -131,13 +129,6 @@ class _LogInState extends State<LogIn> {
                                         if (kDebugMode) {
                                           print(snapshot.toString());
                                         }
-                                        // saving the values to our shared preferences
-                                        await HelperFunction
-                                            .saveUserLoggedInStatus(true);
-                                        await HelperFunction.saveUserEmailSf(
-                                            _email);
-                                        await HelperFunction.saveUserNameSf(
-                                            snapshot.docs[0]['fullName']);
 
                                         // ignore: use_build_context_synchronously
                                         Navigator.pushAndRemoveUntil(context,
@@ -147,7 +138,9 @@ class _LogInState extends State<LogIn> {
                                         }), (route) => false);
                                       } else {
                                         showSnackBar(
-                                            context, Colors.red, value);
+                                            context,
+                                            Theme.of(context).primaryColor,
+                                            value);
                                         setState(() {
                                           isLoading = false;
                                         });
@@ -167,13 +160,13 @@ class _LogInState extends State<LogIn> {
                             Text.rich(TextSpan(
                                 text: 'Donot have an account',
                                 style: const TextStyle(
-                                    color: Colors.black,
+                                    // color: Theme.of(context).c,
                                     fontWeight: FontWeight.w300),
                                 children: [
                                   TextSpan(
                                       text: 'Register now!',
                                       style: const TextStyle(
-                                          color: Colors.black,
+                                          // color: Colors.black,
                                           fontWeight: FontWeight.bold),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {

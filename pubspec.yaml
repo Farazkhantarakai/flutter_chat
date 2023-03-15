@@ -61,6 +61,7 @@ flutter:
   assets:
     - asset/icons/login.jpg
     - asset/icons/register.jpg
+    - asset/icons/message.png
     - asset/icons/user.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

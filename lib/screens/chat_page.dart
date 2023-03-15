@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat/controller/change.dart';
+import 'package:flutter_chat/provider/change.dart';
 import 'package:flutter_chat/services/database_services.dart';
 import 'package:flutter_chat/widgets/chat_tile.dart';
 import 'package:image_picker/image_picker.dart';
@@ -117,7 +117,7 @@ class _ChatPageState extends State<ChatPage> {
             backgroundColor: Theme.of(context).primaryColor,
             title: Text('${widget.groupName}'),
             actions: [
-              change.getChange == false
+              change.getChange == false || change.getMessageIds.isEmpty
                   ? IconButton(
                       onPressed: () {
                         Navigator.pushNamed(context, VideoConference.routName,
@@ -133,7 +133,7 @@ class _ChatPageState extends State<ChatPage> {
                         color: Colors.white,
                       ))
                   : Container(),
-              change.getChange == false
+              change.getChange == false || change.getMessageIds.isEmpty
                   ? IconButton(
                       onPressed: () {},
                       icon: const Icon(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat/controller/change.dart';
+import 'package:flutter_chat/provider/change.dart';
 import 'package:provider/provider.dart';
 
 class ChatTile extends StatefulWidget {
@@ -24,7 +24,7 @@ class _ChatTileState extends State<ChatTile> {
   String selectedMessage = '';
 
   bool longPressed = false;
-
+  bool singleTap = true;
   @override
   Widget build(BuildContext context) {
     var change = Provider.of<Change>(context);
@@ -32,7 +32,17 @@ class _ChatTileState extends State<ChatTile> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          change.addMessageToList(widget.messageId);
+          if (longPressed == true) {
+            longPressed = false;
+            change.removeMessageFromList(widget.messageId);
+          } else {
+            singleTap = !singleTap;
+            if (singleTap == true) {
+              change.addMessageToList(widget.messageId);
+            } else {
+              change.removeMessageFromList(widget.messageId);
+            }
+          }
         });
       },
       onLongPress: () {

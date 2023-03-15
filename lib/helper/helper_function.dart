@@ -11,6 +11,16 @@ class HelperFunction {
     return await sf.setBool(userLoggedInKey, isUserLogedIn);
   }
 
+  // static saveData(bool data) async {
+  //   SharedPreferences sf = await SharedPreferences.getInstance();
+  //   await sf.setBool('theme', data);
+  // }
+
+  // static getThemeData() async {
+  //   SharedPreferences sf = await SharedPreferences.getInstance();
+  //   return sf.getBool('theme') ?? false;
+  // }
+
   static Future<bool?> saveUserNameSf(String userName) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     if (kDebugMode) {

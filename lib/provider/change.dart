@@ -22,6 +22,12 @@ class Change extends ChangeNotifier {
 
   addMessageToList(String messageId) {
     messageIds.add(messageId);
+    notifyListeners();
+  }
+
+  removeMessageFromList(String messageId) {
+    messageIds.remove(messageId);
+    notifyListeners();
   }
 
   removeMessageItem() {

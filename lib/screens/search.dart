@@ -26,16 +26,24 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     getCurrentUserAndId();
+    getUserName();
     super.initState();
   }
 
-  getCurrentUserAndId() async {
-    await HelperFunction.getUserName().then((value) {
+  getUserName() {
+    DatabaseServices(uId: FirebaseAuth.instance.currentUser!.uid)
+        .getName()
+        .then((value) {
       setState(() {
-        userName = value!;
+        userName = value;
       });
     });
-    user = FirebaseAuth.instance.currentUser;
+  }
+
+  getCurrentUserAndId() async {
+    setState(() {
+      user = FirebaseAuth.instance.currentUser;
+    });
   }
 
   @override
@@ -117,6 +125,9 @@ class _SearchState extends State<Search> {
         .isJoinedOrNot(groupId, groupName, admin)
         .then((snapshot) {
       setState(() {
+        if (kDebugMode) {
+          print('joined or unjoined group $snapshot');
+        }
         isJoined = snapshot;
       });
     });
@@ -141,7 +152,7 @@ class _SearchState extends State<Search> {
         subtitle: Text("Admin: ${getName(admin)}"),
         trailing: GestureDetector(
           onTap: () async {
-            print(isJoined);
+            // print(isJoined);
             await DatabaseServices(uId: user!.uid)
                 .toggleGroupJoin(groupId, userName, groupName);
             if (isJoined) {

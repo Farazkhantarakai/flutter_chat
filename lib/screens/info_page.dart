@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/services/database_services.dart';
+import 'package:flutter/foundation.dart';
 
 class Info extends StatefulWidget {
   Info(
@@ -31,6 +32,9 @@ class _InfoState extends State<Info> {
         .getMembers(widget.groupId)
         .then((value) {
       setState(() {
+        if (kDebugMode) {
+          print('value here is $value');
+        }
         members = value;
       });
     });
@@ -52,6 +56,7 @@ class _InfoState extends State<Info> {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: double.infinity,
@@ -93,6 +98,13 @@ class _InfoState extends State<Info> {
                   ],
                 ),
               ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text(
+              'Group Members',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           memberList()

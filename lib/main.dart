@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat/controller/change.dart';
-import 'package:flutter_chat/controller/settingtheme.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_chat/provider/change.dart';
+import 'package:flutter_chat/provider/settingtheme.dart';
 import 'package:flutter_chat/screens/info_page.dart';
 import 'package:flutter_chat/screens/profile.dart';
 import './screens/auth/log_in.dart';
@@ -47,30 +48,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isUserLogedIn = false;
+  // bool _isUserLogedIn = false;
 
   @override
   void initState() {
     super.initState();
-    // getUserLogedInStatus();
   }
-
-  // getUserLogedInStatus() async {
-  //   await HelperFunction.getUserLogedInStatus().then((value) {
-  //     if (kDebugMode) {
-  //       print('loged in value  $value');
-  //     }
-  //     if (value != null) {
-  //       setState(() {
-  //         _isUserLogedIn = value;
-  //       });
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    // var change = Provider.of<ChangeTheme>(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) {
@@ -97,6 +83,10 @@ class _MyAppState extends State<MyApp> {
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                   primaryColor: Constants.primaryColor,
+                  appBarTheme: const AppBarTheme(
+                      iconTheme: IconThemeData(color: Colors.white),
+                      systemOverlayStyle: SystemUiOverlayStyle(
+                          statusBarIconBrightness: Brightness.light)),
                   brightness:
                       change.getTheme ? Brightness.dark : Brightness.light),
               home: StreamBuilder(

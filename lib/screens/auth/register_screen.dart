@@ -26,9 +26,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
         body: SafeArea(
       child: _isLoading
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(
-                color: Colors.red,
+                color: Theme.of(context).primaryColor,
               ),
             )
           : SingleChildScrollView(
@@ -47,7 +47,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const Text('create group to talk with each other'),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Image.asset('asset/icons/register.jpg'),
+                        const SizedBox(
+                          height: 12,
+                        ),
                         TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
@@ -64,12 +70,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _email = value;
                           },
                           decoration: inputDecoration.copyWith(
-                            label: const Text(
-                              'Email',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.black),
-                            ),
+                            hintText: 'Email',
+                            hintStyle: const TextStyle(),
                           ),
                         ),
                         const SizedBox(
@@ -87,12 +89,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _fullName = value;
                             },
                             decoration: inputDecoration.copyWith(
-                              label: const Text(
-                                'FullName',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black),
-                              ),
+                              hintText: 'FullName',
+                              hintStyle: const TextStyle(),
                             )),
                         const SizedBox(
                           height: 5,
@@ -109,13 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _password = value;
                           },
                           decoration: inputDecoration.copyWith(
-                            label: const Text(
-                              'Password',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ),
+                              hintText: 'Password',
+                              hintStyle: const TextStyle()),
                         ),
                         const SizedBox(
                           height: 20,
@@ -135,14 +128,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         Text.rich(TextSpan(
                             text: 'Already have an Account',
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300),
+                            style: const TextStyle(fontWeight: FontWeight.w300),
                             children: [
                               TextSpan(
                                   text: 'Sign Up now!',
                                   style: const TextStyle(
-                                      color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
@@ -167,15 +157,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((value) async {
         if (value == true) {
           //save the value through sharedPreferences
-          await HelperFunction.saveUserLoggedInStatus(true);
-          await HelperFunction.saveUserEmailSf(_email);
-          await HelperFunction.saveUserNameSf(_fullName);
           Fluttertoast.showToast(
               msg: 'Account Created Succefully',
               backgroundColor: Constants.primaryColor);
           setState(() {
             _isLoading = false;
           });
+          Navigator.pushNamed(context, LogIn.routName);
         } else {
           showSnackBar(context, Colors.red, value);
           setState(() {

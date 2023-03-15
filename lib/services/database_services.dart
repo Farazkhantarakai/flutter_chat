@@ -14,9 +14,15 @@ class DatabaseServices {
   final CollectionReference groupCollection = FirebaseFirestore.instance
       .collection('groups'); //this will take the collection of the groups
 
-  get getEmail => email;
-  get getName => name;
-  get getImageUrl => imageUrl;
+  // get getEmail => email;
+  // get getName => name;
+  // get getImageUrl => imageUrl;
+
+  getName() async {
+    DocumentSnapshot snapshot = await userCollection.doc(uId).get();
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+    return data['fullName'];
+  }
 
   Future updateUserData(String fullName, String email) async {
     return await userCollection.doc(uId).set({
@@ -212,12 +218,12 @@ class DatabaseServices {
   Future toggleGroupJoin(
       String groupId, String userName, String groupName) async {
     DocumentReference userDocReference = userCollection.doc(uId);
-    DocumentReference groupDocReference = groupCollection.doc(uId);
+    DocumentReference groupDocReference = groupCollection.doc(groupId);
 
     DocumentSnapshot userDocSnapshot = await userDocReference.get();
     List<dynamic> userGroups = userDocSnapshot['groups'];
 
-    if (userGroups.contains("${groupId}_$userName")) {
+    if (userGroups.contains("${groupId}_$groupName")) {
       await userDocReference.update({
         "groups": FieldValue.arrayRemove(['${groupId}_$groupName'])
       });
